@@ -1,5 +1,6 @@
 import requests
 import json
+import re
 
 # TODO 
 # Historical stats
@@ -12,7 +13,7 @@ def get_full_stats(btag: str) -> dict:
         btag = btag.replace('#', '-')
         return btag
     
-    # TODO @super - try to use regex
+    # TODO @super - clean up magic numbers etc
     # @param btag: string that is checked for proper btag format
     # @return: false if not btag, true if possibly a valid btag
     def validate_btag(btag: str) -> bool:
@@ -103,10 +104,10 @@ if __name__ == "__main__":
     
     btag = "Mystx#1209" #HachiYuki#4141"
     test = get_summary_stats(btag)
-    test = get_full_stats(btag)
-    print(test)
+    #test = get_full_stats(btag)
+    assert(test)
 
-    btag = "Meeow#1317" #HachiYuki#4141"
+    btag = 'failcase#69696969696969696969696969' #HachiYuki#4141"
     test = get_summary_stats(btag)
     #test = get_full_stats(btag)
     print(test)
