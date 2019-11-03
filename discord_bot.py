@@ -21,7 +21,7 @@ async def on_ready():
     print('-' * 20)
 
 @bot.command()
-async def sr(ctx, btag):
+async def summary(ctx, btag):
     stats = get_player_stats.get_summary_stats(btag)
     await ctx.send(stats)
 
