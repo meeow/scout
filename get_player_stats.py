@@ -59,7 +59,12 @@ def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
 
     # handle private profile
     if full_stats["private"]:
-        summary_stats['private'] = full_stats['private']
+        summary_stats['error'] = "private profile"
+        return summary_stats
+
+    # handle accounts without comp stats
+    if not full_stats["ratings"] and full_stats['competitiveStats']['careerStats']:
+        summary_stats['error'] = "no competitive stats"
         return summary_stats
 
     # add sr per role
