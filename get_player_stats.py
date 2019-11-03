@@ -8,7 +8,7 @@ def get_stats(btag: str) -> dict:
         btag = btag.replace('#', '-')
         return btag
     
-    # TODO
+    # TODO @super
     # @param btag: string that is checked for proper btag format
     # @return: false if not btag, true if possibly a valid btag
     def validate_btag(btag: str) -> bool:

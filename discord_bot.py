@@ -1,5 +1,6 @@
 import base64
 import discord
+import yaml
 from discord.ext import commands
 
 token = b'TmpNNU5qWTNOemM1TmpreE16UTNPVGN3LlhidW5GZy5LVWtPUzVqUjhXVTFBRGYzd1VjVl9CT3M4ckU='
@@ -22,16 +23,24 @@ bot.remove_command('help') # Remove default help command
 async def help(ctx):
     title = "Help"
     description = "List of commands are:" 
+    commands = {}
+
+    # Load help file
+    with open('help.yml', 'r') as f:
+        commands = yaml.safe_load(f)
 
     # Make an embed object (stylized discord message)
     embed = discord.Embed(title=title, description=description, color=0xeee657)
 
-    embed.add_field(
-        name="!help", 
-        value='''Display available commands.''', 
-        inline=False)
+    for command in commands:
+        command_name = list(command.keys())[0]
+        command_desc = command[command_name]
+        embed.add_field(
+            name=command_name, 
+            value="\n".join(command_desc), 
+            inline=False)
 
-    # Send the help message
+    # Send the help message back to the channel from where it was called
     await ctx.send(embed=embed)
 
 # Start bot

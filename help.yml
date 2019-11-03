@@ -1,0 +1,4 @@
+- $help:
+  - Describes available commands.
+- $sr {btag#1234}:
+  - Fetch the SR of each role and basic details of specified player.
