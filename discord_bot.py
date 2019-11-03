@@ -4,6 +4,7 @@ import yaml
 from discord.ext import commands
 
 import get_player_stats
+import get_team_stats
 
 # Temp token, implement better security later
 token = b'TmpNNU5qWTNOemM1TmpreE16UTNPVGN3LlhidW5GZy5LVWtPUzVqUjhXVTFBRGYzd1VjVl9CT3M4ckU='
@@ -24,6 +25,15 @@ async def on_ready():
 async def summary(ctx, btag):
     stats = get_player_stats.get_summary_stats(btag)
     await ctx.send(stats)
+
+@bot.command()
+async def team(ctx, team):
+    stats = get_team_stats.get_team_stats(team)
+    stats = str(stats)
+    n = 1999
+    chunks = [stats[i:i+n] for i in range(0, len(stats), n)]
+    for chunk in chunks:
+        await ctx.send(chunk)
 
 # Help command
 bot.remove_command('help') # Remove default help command
