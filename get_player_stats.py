@@ -16,18 +16,20 @@ def get_full_stats(btag: str) -> dict:
     # TODO @super - clean up magic numbers etc
     # @param btag: string that is checked for proper btag format
     # @return: false if not btag, true if possibly a valid btag
+    # use https://us.battle.net/support/en/article/26963 for BattleTag Naming Policy
     def validate_btag(btag: str) -> bool:
         # truncates the btag id number from the btag (i.e. myname#1234 -> myname)
-        if re.search("-\d+$", btag):
-            name = re.sub("-\d+$", "", btag)
+        if re.search("[#-]\d+$", btag):
+            name = re.sub("[#-]\d+$", "", btag)
             
-            is_within_length_limit = (3 <= len(name) <= 12)                
+            min_name_length, max_name_length = 3, 12
+            is_within_length_limit = (min_name_length <= len(name) <= max_name_length)
             starts_with_number = re.search("^\d" ,name)
             banned_characters = "[ .^$*+?(){}\\\\|?`~!@#%&\-_=;:'\"<>,/]"
             contains_banned_characters = re.findall(banned_characters, name)
-                
+            
             is_valid = is_within_length_limit and not starts_with_number and not contains_banned_characters
-                
+            
             return is_valid
         else:
             return False
