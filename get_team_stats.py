@@ -40,4 +40,4 @@ def get_team_stats(team: str) -> dict:
 
 if __name__ == "__main__":
     import pprint
-    pprint.pprint(get_team_stats('MSU A Team'))
+    pprint.pprint(get_team_stats('UofTears'))
