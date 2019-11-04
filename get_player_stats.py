@@ -17,7 +17,6 @@ def get_full_stats(btag: str) -> dict:
     # @return: false if not btag, true if possibly a valid btag
     # use https://us.battle.net/support/en/article/26963 for BattleTag Naming Policy
     def validate_btag(btag: str) -> bool:
-        return True
         # TODO: test this better
         btag_regex = "^([^(.^$*+?(){}\\\\|?`~!@#%&\-_=;:'\"<>,/)0-9]){3,12}\-\d{4,5}$"
         if (re.search(btag_regex, btag) and not btag[0].isdigit()):
