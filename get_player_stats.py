@@ -13,30 +13,13 @@ def get_full_stats(btag: str) -> dict:
         btag = btag.replace('#', '-')
         return btag
     
-    # TODO: @super clean up regex
     # @param btag: string that is checked for proper btag format
     # @return: false if not btag, true if possibly a valid btag
     # use https://us.battle.net/support/en/article/26963 for BattleTag Naming Policy
     def validate_btag(btag: str) -> bool:
-<<<<<<< HEAD
         btag_regex = "^([^(.^$*+?(){}\\\\|?`~!@#%&\-_=;:'\"<>,/)0-9]){3,12}\-\d{4,5}$"
         if (re.search(btag_regex, btag) and not btag[0].isdigit()):
             return True
-=======
-        # truncates the btag id number from the btag (i.e. myname#1234 -> myname)
-        if re.search("[#-]\d+$", btag):
-            name = re.sub("[#-]\d+$", "", btag)
-            
-            min_name_length, max_name_length = 3, 12
-            is_within_length_limit = (min_name_length <= len(name) <= max_name_length)
-            starts_with_number = re.search("^\d" ,name)
-            banned_characters = "[ .^$*+?(){}\\\\|?`~!@#%&\-_=;:'\"<>,/]"
-            contains_banned_characters = re.search(banned_characters, name)
-            
-            is_valid = is_within_length_limit and not starts_with_number and not contains_banned_characters
-            
-            return is_valid
->>>>>>> 21339e54ea5ee99ba180f8ea1a715efe6a9ffc40
         else:
             return False
 
@@ -53,11 +36,11 @@ def get_full_stats(btag: str) -> dict:
 
     return result
 
-# TODO: Implement top_heroes parameter @hachi
+# TODO: Implement top_heroes parameter @hachi @super
 # You will need to sort by most played
 # @param btag: battletag in format Meeow#1317 or Meeow-1317
 # @param top_heroes: number of most played heroes to return
-# @return: SR and top most played heroes
+# @return: SR and stats for top most played heroes
 def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
     full_stats = get_full_stats(btag)
     summary_stats = {}
