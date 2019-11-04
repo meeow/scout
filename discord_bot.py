@@ -29,28 +29,47 @@ async def summary(ctx, btag):
     await ctx.send(stats)
 
 # TODO: work in progress
-# Blocked by top_heroes
 @bot.command()
-async def team(ctx, team):
+async def info(ctx, team):
     stats = get_team_stats.get_team_stats(team)
     for player in stats:
-        print(player, stats[player])
+        #print(player, stats[player])
         embed = discord.Embed(title=player, color=EMBED_COLOR)
-        test = ''
-        try:
-            test = stats[player]['damage']
-        except:
-            test = "no data"
+        
+        # add errors
+        err_key = 'error'
+        if err_key in stats[player]:
+            errors = stats[player][err_key]
+            embed.add_field(
+                name=err_key.capitalize(),
+                value=errors
+            )
 
-        embed.add_field(
-            name="Damage",
-            value=test
-        )
-        #time.sleep(0.1)
+        # add ratings
+        sr_key = 'ratings'
+        if sr_key in stats[player]:
+            ratings = stats[player][sr_key]
+            embed.add_field(
+                name=sr_key.capitalize(),
+                value="\n".join([f"**{role.capitalize()}**: {ratings[role]}" for role in ratings])
+            )
+
+        # add most played heroes 
+        hero_key = 'heroStats'
+        if hero_key in stats[player]:
+            hero_stats = stats[player][hero_key]
+            for hero in hero_stats:
+                specific_hero_stats = hero_stats[hero]
+                embed.add_field(
+                    name=hero.capitalize(),
+                    value="\n".join([f"**{stat.capitalize()}**: {specific_hero_stats[stat]}" for stat in specific_hero_stats])
+                )
+
+        time.sleep(0.05)
         await ctx.send(embed=embed)
 
 # Help command
-bot.remove_command('help') # Remove default help command
+bot.remove_command('help') 
 @bot.command() 
 async def help(ctx):
     commands = {}

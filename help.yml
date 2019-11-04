@@ -2,3 +2,5 @@
   - Describes available commands.
 - $summary {btag#1234}:
   - Fetch the SR of each role and basic details of specified player.
+- $info {"team name"}:
+  - Fetch basic info of specified tespa team

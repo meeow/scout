@@ -38,6 +38,8 @@ def get_team_stats(team: str) -> dict:
         result[btag] = get_player_stats.get_summary_stats(btag)
     return result
 
+
+# manual testing
 if __name__ == "__main__":
     import pprint
     pprint.pprint(get_team_stats('UofTears'))

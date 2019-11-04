@@ -11,6 +11,10 @@ from twisted.internet.task import deferLater
 
 logging.getLogger('scrapy').propagate = False
 
+# TODO: store output in DB, not csv
+# BUG - scrape_tespa.py: teams not on the leaderboard cannot be scouted
+    # must scrape team names from participants tab
+
 # Must be manually updated every season
 BASE_URL = 'https://compete.tespa.org'
 TOURNAMENT_URL = BASE_URL + '/tournament/145'

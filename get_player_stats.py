@@ -1,9 +1,9 @@
 import requests
 import json
 import re
+import operator
 
-# TODO 
-# Historical stats
+# TODO: Historical stats
 
 # @param btag: battletag in format Meeow#1317 or Meeow-1317
 # @return: dict of json response from api
@@ -17,6 +17,8 @@ def get_full_stats(btag: str) -> dict:
     # @return: false if not btag, true if possibly a valid btag
     # use https://us.battle.net/support/en/article/26963 for BattleTag Naming Policy
     def validate_btag(btag: str) -> bool:
+        return True
+        # TODO: test this better
         btag_regex = "^([^(.^$*+?(){}\\\\|?`~!@#%&\-_=;:'\"<>,/)0-9]){3,12}\-\d{4,5}$"
         if (re.search(btag_regex, btag) and not btag[0].isdigit()):
             return True
@@ -47,7 +49,7 @@ def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
     summary_hero_stats = {}
 
     # add btag
-    summary_stats['name'] = full_stats['name']
+    # summary_stats['name'] = full_stats['name']
 
     # handle private profile
     if full_stats["private"]:
@@ -61,8 +63,9 @@ def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
 
     # add sr per role
     ratings = full_stats['ratings']
+    summary_stats['ratings'] = {}
     for rating in ratings:
-        summary_stats[rating['role']] = rating['level']
+        summary_stats['ratings'][rating['role']] = rating['level']
     
     # add competitive stats 
     keywords = {
@@ -73,18 +76,23 @@ def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
         "timePlayed",
     }
     hero_stats = full_stats['competitiveStats']['careerStats']
+
     for hero in hero_stats:
         hero_stat = hero_stats[hero]
         average_stats = hero_stat['average']
-        # edge case
-        if not average_stats:
+        # edge cases
+        if not average_stats or hero == 'allHeroes':
             continue
         average_stats.update(hero_stat['game'])
         # only add stats that match keywords
         summary_hero_stats[hero] = {k:v for k,v in average_stats.items() if k in keywords}
     
+    # Find most played hero
+    hero_times = {k: int(summary_hero_stats[k]["timePlayed"].replace(':','')) for k,v in summary_hero_stats.items()}
+    most_played = max(hero_times, key=hero_times.get)
+
     # nest the hero stats dict inside main stats dict
-    summary_stats['heroStats'] = summary_hero_stats
+    summary_stats['heroStats'] = { most_played: summary_hero_stats[most_played] }
 
     return summary_stats
 
@@ -96,9 +104,9 @@ if __name__ == "__main__":
     btag = "Mystx#1209" #HachiYuki#4141"
     test = get_summary_stats(btag)
     #test = get_full_stats(btag)
-    assert(test)
-
-    btag = 'failcase#69696969696969696969696969' #HachiYuki#4141"
-    test = get_summary_stats(btag)
-    #test = get_full_stats(btag)
     print(test)
+
+    # btag = 'failcase#69696969696969696969696969' #HachiYuki#4141"
+    # test = get_summary_stats(btag)
+    # #test = get_full_stats(btag)
+    # print(test)
