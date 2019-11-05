@@ -2,6 +2,7 @@ import requests
 import json
 import re
 import operator
+from collections import OrderedDict
 
 # TODO: Historical stats
 
@@ -89,10 +90,12 @@ def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
     
     # Find most played hero
     hero_times = {k: int(summary_hero_stats[k]["timePlayed"].replace(':','')) for k,v in summary_hero_stats.items()}
-    most_played = max(hero_times, key=hero_times.get)
+    hero_sorted = sorted(hero_times.items(),key=lambda item:item[1],reverse=True)[:top_heroes]
+    top_hero_list = [hero[0] for hero in hero_sorted]
+    top_hero_stats = [{hero : summary_hero_stats[hero]} for hero in top_hero_list]
 
     # nest the hero stats dict inside main stats dict
-    summary_stats['heroStats'] = { most_played: summary_hero_stats[most_played] }
+    summary_stats['heroStats'] = top_hero_stats
 
     return summary_stats
 
