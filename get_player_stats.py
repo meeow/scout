@@ -2,7 +2,6 @@ import requests
 import json
 import re
 import operator
-from collections import OrderedDict
 
 # TODO: Historical stats
 
@@ -88,7 +87,7 @@ def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
         # only add stats that match keywords
         summary_hero_stats[hero] = {k:v for k,v in average_stats.items() if k in keywords}
     
-    # Find most played hero
+    # Find most played heroes
     hero_times = {k: int(summary_hero_stats[k]["timePlayed"].replace(':','')) for k,v in summary_hero_stats.items()}
     hero_sorted = sorted(hero_times.items(),key=lambda item:item[1],reverse=True)[:top_heroes]
     top_hero_list = [hero[0] for hero in hero_sorted]

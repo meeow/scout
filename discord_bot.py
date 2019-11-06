@@ -57,10 +57,9 @@ async def info(ctx, team):
         # add most played heroes 
         hero_key = 'heroStats'
         if hero_key in stats[player]:
-            hero_stats = stats[player][hero_key] #list
-            for hero_info in hero_stats: #dict
-                for hero in hero_info.keys(): #str
-                    hero_name = hero
+            hero_stats = stats[player][hero_key]
+            for hero_info in hero_stats:
+                hero_name = list(hero_info.keys())[0]
                 embed.add_field(
                     name=hero_name.capitalize(),
                     value="\n".join([f"**{stat.capitalize()}**: {hero_info[hero_name][stat]}" for stat in hero_info[hero_name]])
