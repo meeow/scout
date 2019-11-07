@@ -2,6 +2,13 @@
   - Describes available commands.
 - $summary {btag#1234}:
   - Fetch the SR of each role and basic details of specified player.
+  - "**Key**:"
+  - ':skull: - deathsAvgPer10Min'
+  - ':gun: - finalBlowsAvgPer10Min'
+  - ':crossed_swords: - heroDamageDoneAvgPer10Min'
+  - ":trophy: - winPercentage"
+  - ":clock1: - timePlayed"
+  - ":ambulance: - healingDoneAvgPer10Min"
 - $info {"team name"}:
   - Fetch basic info of specified tespa team
   - Including summary of each player on the roster
