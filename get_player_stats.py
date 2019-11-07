@@ -3,6 +3,8 @@ import json
 import re
 import operator
 
+from discord_globals import STAT_KEYWORDS
+
 # TODO: Historical stats
 
 # @param btag: battletag in format Meeow#1317 or Meeow-1317
@@ -38,18 +40,17 @@ def get_full_stats(btag: str) -> dict:
 
     return result
 
-# TODO: Implement top_heroes parameter @hachi @super
 # You will need to sort by most played
 # @param btag: battletag in format Meeow#1317 or Meeow-1317
 # @param top_heroes: number of most played heroes to return
 # @return: SR and stats for top most played heroes
-def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
+def get_summary_stats(btag: str, top_heroes: int=5) -> dict:
     full_stats = get_full_stats(btag)
     summary_stats = {}
     summary_hero_stats = {}
 
     # add btag
-    # summary_stats['name'] = full_stats['name']
+    summary_stats['name'] = full_stats['name']
 
     # handle private profile
     if full_stats["private"]:
@@ -68,12 +69,12 @@ def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
         summary_stats['ratings'][rating['role']] = rating['level']
     
     # add competitive stats 
-    keywords = {
-        'deathsAvgPer10Min', 
-        'finalBlowsAvgPer10Min', 
-        'heroDamageDoneAvgPer10Min',
-        "winPercentage", 
-        "timePlayed",
+    STAT_KEYWORDS = {
+        'deathsAvgPer10Min': '', 
+        'finalBlowsAvgPer10Min': '', 
+        'heroDamageDoneAvgPer10Min': '',
+        "winPercentage": '', 
+        "timePlayed": '',
     }
     hero_stats = full_stats['competitiveStats']['careerStats']
 
@@ -85,10 +86,10 @@ def get_summary_stats(btag: str, top_heroes: int=3) -> dict:
             continue
         average_stats.update(hero_stat['game'])
         # only add stats that match keywords
-        summary_hero_stats[hero] = {k:v for k,v in average_stats.items() if k in keywords}
+        summary_hero_stats[hero] = {k:v for k,v in average_stats.items() if k in STAT_KEYWORDS}
     
-    # Find most played heroes
-    hero_times = {k: int(summary_hero_stats[k]["timePlayed"].replace(':','')) for k,v in summary_hero_stats.items()}
+    # find most played heroes
+    hero_times = {k: int(summary_hero_stats[k]["timePlayed"].replace(':','')) for k, _ in summary_hero_stats.items()}
     hero_sorted = sorted(hero_times.items(),key=lambda item:item[1],reverse=True)[:top_heroes]
     top_hero_list = [hero[0] for hero in hero_sorted]
     top_hero_stats = [{hero : summary_hero_stats[hero]} for hero in top_hero_list]
