@@ -8,5 +8,6 @@ STAT_KEYWORDS = {
     'heroDamageDoneAvgPer10Min': ':crossed_swords:',
     "winPercentage": ':trophy:', 
     "timePlayed": ':clock1:',
+    "healingDoneAvgPer10Min": ":ambulance:",
 }
 

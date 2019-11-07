@@ -69,15 +69,7 @@ def get_summary_stats(btag: str, top_heroes: int=5) -> dict:
         summary_stats['ratings'][rating['role']] = rating['level']
     
     # add competitive stats 
-    STAT_KEYWORDS = {
-        'deathsAvgPer10Min': '', 
-        'finalBlowsAvgPer10Min': '', 
-        'heroDamageDoneAvgPer10Min': '',
-        "winPercentage": '', 
-        "timePlayed": '',
-    }
     hero_stats = full_stats['competitiveStats']['careerStats']
-
     for hero in hero_stats:
         hero_stat = hero_stats[hero]
         average_stats = hero_stat['average']
