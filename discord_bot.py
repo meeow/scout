@@ -51,7 +51,7 @@ async def help(ctx):
         commands = yaml.safe_load(f)
 
     # Make an embed object (stylized discord message)
-    embed = discord.Embed(title="Help", color=discord_globals.EMBED_COLOR)
+    embed = discord.Embed(title="mmmyea", color=discord_globals.EMBED_COLOR)
 
     for command in commands:
         command_name = list(command.keys())[0]

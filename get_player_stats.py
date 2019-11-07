@@ -28,6 +28,7 @@ def get_full_stats(btag: str) -> dict:
             return False
 
     btag = format_btag(btag)
+
     # invalid btag
     if not validate_btag(btag):
         raise ValueError
@@ -40,7 +41,6 @@ def get_full_stats(btag: str) -> dict:
 
     return result
 
-# You will need to sort by most played
 # @param btag: battletag in format Meeow#1317 or Meeow-1317
 # @param top_heroes: number of most played heroes to return
 # @return: SR and stats for top most played heroes
@@ -82,9 +82,9 @@ def get_summary_stats(btag: str, top_heroes: int=5) -> dict:
     
     # find most played heroes
     hero_times = {k: int(summary_hero_stats[k]["timePlayed"].replace(':','')) for k, _ in summary_hero_stats.items()}
-    hero_sorted = sorted(hero_times.items(),key=lambda item:item[1],reverse=True)[:top_heroes]
+    hero_sorted = sorted(hero_times.items(), key=lambda item: item[1], reverse=True)[:top_heroes]
     top_hero_list = [hero[0] for hero in hero_sorted]
-    top_hero_stats = [{hero : summary_hero_stats[hero]} for hero in top_hero_list]
+    top_hero_stats = [{hero: summary_hero_stats[hero]} for hero in top_hero_list]
 
     # nest the hero stats dict inside main stats dict
     summary_stats['heroStats'] = top_hero_stats
