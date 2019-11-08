@@ -79,7 +79,13 @@ def get_summary_stats(btag: str, top_heroes: int=5) -> dict:
         average_stats.update(hero_stat['game'])
         # only add stats that match keywords
         summary_hero_stats[hero] = {k:v for k,v in average_stats.items() if k in STAT_KEYWORDS}
-    
+        summary_hero_stats[hero] = {k:(summary_hero_stats[hero][k] if k in summary_hero_stats[hero] else "N/A") 
+                                    for k in STAT_KEYWORDS}
+        # remove sec from time played and display 0 hour
+        if summary_hero_stats[hero]["timePlayed"].count(":") < 2:
+            summary_hero_stats[hero]["timePlayed"] = "00:"+summary_hero_stats[hero]["timePlayed"]
+        summary_hero_stats[hero]["timePlayed"] = summary_hero_stats[hero]["timePlayed"][:-3]
+
     # find most played heroes
     hero_times = {k: int(summary_hero_stats[k]["timePlayed"].replace(':','')) for k, _ in summary_hero_stats.items()}
     hero_sorted = sorted(hero_times.items(), key=lambda item: item[1], reverse=True)[:top_heroes]
