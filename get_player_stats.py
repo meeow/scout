@@ -51,8 +51,9 @@ def get_summary_stats(btag: str, top_heroes: int=5) -> dict:
     summary_stats = {}
     summary_hero_stats = {}
 
-    # add btag
+    # add btag and icon
     summary_stats['name'] = full_stats['name']
+    summary_stats['icon'] = full_stats['icon']
 
     # handle private profile
     if full_stats["private"]:
@@ -102,8 +103,3 @@ if __name__ == "__main__":
     test = get_summary_stats(btag)
     #test = get_full_stats(btag)
     print(test)
-
-    # btag = 'failcase#69696969696969696969696969' #HachiYuki#4141"
-    # test = get_summary_stats(btag)
-    # #test = get_full_stats(btag)
-    # print(test)

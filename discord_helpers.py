@@ -1,8 +1,14 @@
 import discord
 import discord_globals 
 
+def bold(inp: str) -> str:
+    return f"**{inp}**"
+
 def player_summary_stats(player_stats: dict) -> discord.Embed:
-    embed = discord.Embed(title=player_stats['name'], color=discord_globals.EMBED_COLOR)
+    embed = discord.Embed(color=discord_globals.EMBED_COLOR)
+
+    # add title and thumbnail
+    embed.set_author(name=player_stats['name'], icon_url=player_stats['icon'])
     
     # add errors
     err_key = 'error'
@@ -17,8 +23,8 @@ def player_summary_stats(player_stats: dict) -> discord.Embed:
     if sr_key in player_stats:
         ratings = player_stats[sr_key]
         embed.add_field(
-            name=sr_key.capitalize(),
-            value="\n".join([f"**{role.capitalize()}**: {ratings[role]}" for role in ratings])
+            name=bold(sr_key.capitalize()),
+            value="\n".join([f"{bold(role.capitalize())}: {ratings[role]}" for role in ratings])
         )
     # add most played heroes 
     hero_key = 'heroStats'
@@ -27,7 +33,7 @@ def player_summary_stats(player_stats: dict) -> discord.Embed:
         for hero_info in hero_stats:
             hero_name = list(hero_info.keys())[0]
             embed.add_field(
-                name=hero_name.capitalize(),
+                name=bold(hero_name.capitalize()),
                 value="\n".join([f'{discord_globals.STAT_KEYWORDS[stat]}: {hero_info[hero_name][stat]}' for stat in hero_info[hero_name]])
             )
 
