@@ -2,6 +2,7 @@ import requests
 import json
 import re
 import operator
+from datetime import datetime
 
 from discord_globals import STAT_KEYWORDS
 
@@ -45,6 +46,7 @@ def get_full_stats(btag: str) -> dict:
 # @param top_heroes: number of most played heroes to return
 # @return: SR and stats for top most played heroes
 def get_summary_stats(btag: str, top_heroes: int=5) -> dict:
+
     full_stats = get_full_stats(btag)
     summary_stats = {}
     summary_hero_stats = {}
@@ -78,13 +80,7 @@ def get_summary_stats(btag: str, top_heroes: int=5) -> dict:
             continue
         average_stats.update(hero_stat['game'])
         # only add stats that match keywords
-        summary_hero_stats[hero] = {k:v for k,v in average_stats.items() if k in STAT_KEYWORDS}
-        summary_hero_stats[hero] = {k:(summary_hero_stats[hero][k] if k in summary_hero_stats[hero] else "N/A") 
-                                    for k in STAT_KEYWORDS}
-        # remove sec from time played and display 0 hour
-        if summary_hero_stats[hero]["timePlayed"].count(":") < 2:
-            summary_hero_stats[hero]["timePlayed"] = "00:"+summary_hero_stats[hero]["timePlayed"]
-        summary_hero_stats[hero]["timePlayed"] = summary_hero_stats[hero]["timePlayed"][:-3]
+        summary_hero_stats[hero] = {k:(average_stats[k] if k in average_stats else "N/A") for k in STAT_KEYWORDS}
 
     # find most played heroes
     hero_times = {k: int(summary_hero_stats[k]["timePlayed"].replace(':','')) for k, _ in summary_hero_stats.items()}
