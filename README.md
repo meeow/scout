@@ -1,4 +1,4 @@
-# TespaScoutingBot (formerly mmmyea)
+# Scout (formerly mmmyea)
 web app and discord bot with helpful utilities for overwatch teams. can currently scout for teams that exist on the tepsa leaderboard.
 
 ## requirements
